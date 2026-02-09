@@ -36,7 +36,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toDTO(user.orElse(null)));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserResponseDTO> dtos = userMapper.toDTOList(users);

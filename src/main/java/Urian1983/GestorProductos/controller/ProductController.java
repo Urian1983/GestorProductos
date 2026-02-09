@@ -36,7 +36,7 @@ public class ProductController {
         return ResponseEntity.ok(productMapper.toDTO(product.orElse(null)));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     public ResponseEntity<List<ProductResponseDTO>> getAllUsers() {
         List<Product> users = productService.getAllProducts();
         List<ProductResponseDTO> dtos = productMapper.toDTOList(users);

@@ -13,12 +13,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
     User toEntity(UserRequestDTO dto);
 
-    @Mapping(source = "id", target = "userId")
-    @Mapping(source = "name", target = "userName")
-    @Mapping(source = "email", target ="userEmail")
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "email", target ="email")
     UserResponseDTO toDTO(User user);
 
     List<UserResponseDTO> toDTOList(List<User> users);

@@ -10,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/users")
 public class UserController {
 
     @Autowired
@@ -32,8 +31,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        return ResponseEntity.ok(userMapper.toDTO(user.orElse(null)));
+
+        User userToGet = userService.getUserById(id);
+
+        UserResponseDTO dto = userMapper.toDTO(userToGet);
+
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping

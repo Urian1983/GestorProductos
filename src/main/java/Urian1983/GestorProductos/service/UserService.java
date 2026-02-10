@@ -13,20 +13,19 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public User addUser(User user) {
         return userRepository.save(user);
     }
 
-    public boolean deleteUser(Long id) {
-        if(!userRepository.existsById(id)) {
-            throw new NotFoundException("No existe el usuario con el id: " + id);
-        }
-        else{
-            userRepository.deleteById(id);
-            return true;
-        }
+    public void deleteUser(Long id) {
+        User userToDelete = userRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Can't be deleted, Not Found user with id: " +id)
+        );
+
+     userRepository.delete(userToDelete);
+
     }
 
     public User updateUser(Long id, User updatedUser) {
@@ -41,8 +40,9 @@ public class UserService {
 
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) {
+       return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Can't be found, Not Found user with id: " +id));
     }
 
     public List<User> getAllUsers() {

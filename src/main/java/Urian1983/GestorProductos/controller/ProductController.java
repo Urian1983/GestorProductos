@@ -5,25 +5,22 @@ import Urian1983.GestorProductos.domain.dto.ProductResponseDTO;
 import Urian1983.GestorProductos.domain.model.Product;
 import Urian1983.GestorProductos.mapper.ProductMapper;
 import Urian1983.GestorProductos.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
     ProductService productService;
 
-    @Autowired
     ProductMapper productMapper;
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createUser(@RequestBody ProductRequestDTO dto) {
+    public ResponseEntity<ProductResponseDTO> createUser(@Valid @RequestBody ProductRequestDTO dto) {
         Product product = productMapper.toEntity(dto);
         Product saved = productService.addProduct(product);
         ProductResponseDTO responseDTO = productMapper.toDTO(saved);
@@ -32,14 +29,19 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.getProductById(id);
-        return ResponseEntity.ok(productMapper.toDTO(product.orElse(null)));
+
+
+        Product product = productService.getProductById(id);
+
+        ProductResponseDTO dto = productMapper.toDTO(product);
+
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDTO>> getAllUsers() {
-        List<Product> users = productService.getAllProducts();
-        List<ProductResponseDTO> dtos = productMapper.toDTOList(users);
+        List<Product> products = productService.getAllProducts();
+        List<ProductResponseDTO> dtos = productMapper.toDTOList(products);
         return ResponseEntity.ok(dtos);
     }
 
@@ -50,7 +52,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id,
+    public ResponseEntity<ProductResponseDTO> updateProduct(@Valid @PathVariable Long id,
                                                       @RequestBody ProductRequestDTO dto) {
        Product updatedProduct = productMapper.toEntity(dto);
        Product saved = productService.updateProduct(id, updatedProduct);

@@ -1,14 +1,13 @@
 package Urian1983.GestorProductos.service;
 
 import Urian1983.GestorProductos.domain.model.Product;
-import Urian1983.GestorProductos.domain.model.User;
 import Urian1983.GestorProductos.exception.NotFoundException;
 import Urian1983.GestorProductos.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class ProductService {
@@ -21,20 +20,17 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Boolean removeProduct(Long id){
+    public void removeProduct(Long id){
 
-        if(!productRepository.findById(id).isPresent()){
-            throw new NotFoundException("La id del producto no se encuentra en la base de datos" +id);
-        }
-
-        productRepository.deleteById(id);
-        return true;
+        Product productToRemove=productRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("Product not found"));
+        productRepository.delete(productToRemove);
     }
 
     public Product updateProduct(Long id,Product updatedProduct){
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+                .orElseThrow(() -> new NotFoundException("Product not found"));
 
            product.setName(updatedProduct.getName());
             product.setPrice(updatedProduct.getPrice());
@@ -44,8 +40,10 @@ public class ProductService {
         return product;
     }
 
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
+    public Product getProductById(Long id) {
+
+       return productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
     }
 
     public List<Product> getAllProducts(){

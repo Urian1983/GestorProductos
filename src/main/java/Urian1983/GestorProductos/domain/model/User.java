@@ -2,7 +2,6 @@ package Urian1983.GestorProductos.domain.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,6 @@ public class User {
     private String name;
 
     @Column(name="email")
-    @Email
     private String email;
 
     @OneToMany(mappedBy = "user")

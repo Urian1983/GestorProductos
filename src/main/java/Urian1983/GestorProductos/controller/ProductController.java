@@ -3,7 +3,7 @@ package Urian1983.GestorProductos.controller;
 import Urian1983.GestorProductos.domain.dto.ProductRequestDTO;
 import Urian1983.GestorProductos.domain.dto.ProductResponseDTO;
 import Urian1983.GestorProductos.domain.model.Product;
-import Urian1983.GestorProductos.mapper.ProductMapper;
+import Urian1983.GestorProductos.mapper.ProductMapperImpl;
 import Urian1983.GestorProductos.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/patata")
 public class ProductController {
 
-    ProductService productService;
+    private final ProductService productService;
 
-    ProductMapper productMapper;
+    private final ProductMapperImpl productMapper;
+
+    public ProductController(ProductService productService, ProductMapperImpl productMapper) {
+        this.productService = productService;
+        this.productMapper = productMapper;
+    }
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createUser(@Valid @RequestBody ProductRequestDTO dto) {

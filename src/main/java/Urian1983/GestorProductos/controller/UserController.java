@@ -3,9 +3,8 @@ package Urian1983.GestorProductos.controller;
 import Urian1983.GestorProductos.domain.dto.UserRequestDTO;
 import Urian1983.GestorProductos.domain.dto.UserResponseDTO;
 import Urian1983.GestorProductos.domain.model.User;
-import Urian1983.GestorProductos.mapper.UserMapper;
+import Urian1983.GestorProductos.mapper.UserMapperImpl;
 import Urian1983.GestorProductos.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +14,14 @@ import java.util.List;
 @RequestMapping("api/users")
 public class UserController {
 
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserMapper userMapper;
+    private final UserService userService;
+
+    private final UserMapperImpl userMapper;
+
+    public UserController(UserService userService, UserMapperImpl userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO dto) {
